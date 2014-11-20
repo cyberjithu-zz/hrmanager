@@ -8,5 +8,7 @@ urlpatterns = patterns('',
     url(r'^$', 'hrmanager.views.login', name='login'),
     url(r'^employee/', include('employee.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^hradmin/', include("hradmin.urls")),
+
 
 )
