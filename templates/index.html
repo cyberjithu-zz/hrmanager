@@ -27,7 +27,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <!----End Calender -------->
 </head>
 <body>			       
-	   <div class="column_right_grid sign-in">
+	   <div id="sign-in" class="column_right_grid sign-in">
 		 	<div class="sign_in">
 		       <h3>Sign in to your account</h3>
 			    <form action="" method="post">
@@ -41,14 +41,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			 	    </span>
 			 		<input type="submit" class="my-button" value="Sign In">
 			 	</form>
-			       <h4><a href="#">Forget Password?</a></h4>				   
+			 	   <h4>{{ error }}</h4>
+			       <h4><a href="#" onclick="document.getElementById('resetpass').style.display=block;document.getElementById('sign-in').style.display=none;">Forget Password?</a></h4>
   		    </div>
-  		 	<div class="signin_facebook">
-			   	<p>
-			   	 <a href="#">  <i> <img src="images/facebook.png" alt="" /></i>Sign in with facebook</a>
-			   	</p>
-		    </div>
-	   </div> 
+  	   <div id="resetpass" class="column_right_grid sign-in" style="display:none">
+		 	<div class="sign_in">
+		       <h3>Forget Password?</h3>
+			    <form action="" method="post">
+			    {% csrf_token %}
+			    	<span>
+			 	    <i><img src="{% static "employee/images/user.png" %}" alt="" /></i><input type="text" placeholder="Enter official email id" name="email">
+			 	    </span>
+			 		<input type="submit" class="my-button" value="Request">
+			 	</form>
+			       <h4><a onclick="document.getElementById('sign-in').style.display=block;document.getElementById('resetpass').style.display=none;" href="#">Sign in</a></h4>
+  		    </div>
+	   </div>
 </body>
 </html>
 
