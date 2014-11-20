@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 def login(request):
     if request.method == "GET":
-        return render(request, "index.html")
+        return render(request, "index.html", {'error': ''})
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -27,4 +27,5 @@ def login(request):
             else:
                 return HttpResponse("haseeb failed 1")
         else:
-            return HttpResponse("haseeb failed 2")
+            msg = 'Username or password incorrect'
+            return render(request, "index.html", {'error': msg})
