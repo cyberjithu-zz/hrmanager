@@ -6,6 +6,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'hrmanager.views.login', name='login'),
+    url(r'^logout/', 'hrmanager.views.logout', name="logout"),
     url(r'^employee/', include('employee.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^hradmin/', include("hradmin.urls")),

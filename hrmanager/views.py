@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import login as authlogin, authenticate
+from django.contrib.auth import login as authlogin, authenticate,logout as authlogout
 from django.contrib.auth.models import User, Group
 from employee.models import EmployeeInfo
 from django.forms.models import model_to_dict
@@ -29,3 +29,8 @@ def login(request):
         else:
             msg = 'Username or password incorrect'
             return render(request, "index.html", {'error': msg})
+
+
+def logout(request):
+    authlogout(request)
+    return HttpResponseRedirect('/')
