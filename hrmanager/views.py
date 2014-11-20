@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as authlogin, authenticate
 from django.contrib.auth.models import User, Group
 from employee.models import EmployeeInfo
@@ -21,7 +21,7 @@ def login(request):
                     authlogin(request, user)
                     employee_objects = EmployeeInfo.objects.all()
                     employee_objects = [model_to_dict(obj) for obj in employee_objects]
-                    return render(request, "hradmin/hradmin.html", {"employee_objects": employee_objects})
+                    return HttpResponseRedirect('hradmin/', {"employee_objects": employee_objects})
                 else:
                     return HttpResponse("haseeb failed 3")
             else:
