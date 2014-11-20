@@ -1,0 +1,54 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<head>
+<title>Ui kits Website Template | Home :: w3layouts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+{% load staticfiles%}
+<link href="{% static "employee/css/style.css" %}" rel="stylesheet" type="text/css" media="all"/>
+<link href="{% static "employee/css/nav.css" %}" rel="stylesheet" type="text/css" media="all"/>
+<link href='http://fonts.googleapis.com/css?family=Carrois+Gothic+SC' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static "employee/js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "employee/js/login.js" %}"></script>
+<script type="text/javascript" src="{% static "employee/js/Chart.js" %}"></script>
+ <script type="text/javascript" src="{% static "employee/js/jquery.easing.js" %}"></script>
+ <script type="text/javascript" src="{% static "employee/js/jquery.ulslide.js" %}"></script>
+ <!----Calender -------->
+  <link rel="stylesheet" href="{% static "employee/css/clndr.css" %}" type="text/css" />
+  <script src="{% static "employee/js/underscore-min.js" %}"></script>
+  <script src= "{% static "employee/js/moment-2.2.1.js" %}"></script>
+  <script src="{% static "employee/js/clndr.js" %}"></script>
+  <script src="{% static "employee/js/site.js" %}"></script>
+  <!----End Calender -------->
+</head>
+<body>			       
+	   <div class="column_right_grid sign-in">
+		 	<div class="sign_in">
+		       <h3>Sign in to your account</h3>
+			    <form action="" method="post">
+			    {% csrf_token %}
+			    	<span>
+			 	    <i><img src="{% static "employee/images/user.png" %}" alt="" /></i><input type="text" placeholder="Username" name="username">
+			 	    </span>
+			 	    <span>
+			 	     <i><img src="{% static "employee/images/lock.png" %}" alt="" /></i>
+			 	     <input type="password" placeholder="Password" name="password">
+			 	    </span>
+			 		<input type="submit" class="my-button" value="Sign In">
+			 	</form>
+			       <h4><a href="#">Forget Password?</a></h4>				   
+  		    </div>
+  		 	<div class="signin_facebook">
+			   	<p>
+			   	 <a href="#">  <i> <img src="images/facebook.png" alt="" /></i>Sign in with facebook</a>
+			   	</p>
+		    </div>
+	   </div> 
+</body>
+</html>
+

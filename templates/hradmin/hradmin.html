@@ -1,0 +1,41 @@
+{% extends "employee/base.html" %}
+{% block main_content %}
+{% load staticfiles%}
+
+<link href="{% static "hradmin/css/style.css" %}" rel="stylesheet" type="text/css" media="all"/>
+
+	<div class="column_middle">	          
+	    		 <div class="user_box">
+	    		 	 <h3>User List</h3>
+	    		 	   <div class="menu_box_list">
+				      		<table class="table-fill">
+				      			<thead>
+					      			<tr>
+					      				<th class="text-left">
+					      					ID	
+					      				</th>
+						      			<th class="text-left">
+						      				NAME
+						      			</th>
+					      			</tr>
+						      	</thead>
+						      	<tbody class="table-hover">
+						      		{% for data in employee_objects %}
+						      			<tr>
+						      				<td class="text-left">
+							      				{{data.id }}
+							      			</td> 
+							      			<td class="text-left">
+							      				{{data.name }}
+							      			</td>
+						      				
+						      			</tr>
+						      		{% endfor %}
+						      	</tbody>
+				      		</table>
+				      </div>
+	    		 </div>
+		        
+	    </div> 
+
+{% endblock %}
