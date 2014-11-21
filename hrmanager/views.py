@@ -7,21 +7,26 @@ from django.contrib.auth.decorators import login_required
 
 
 def login(request):
+    adming_group = Group.objects.get(name="admin")
     if request.method == "GET":
-        return render(request, "index.html", {'error': ''})
+        if request.user.is_authenticated():
+            if adming_group in request.user.groups.all():
+                return HttpResponseRedirect('hradmin/')
+            else:
+                return HttpResponseRedirect('employee/')
+        else:
+            return render(request, "index.html", {'error': ''})
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
-                adming_group = Group.objects.get(name="admin")
                 if adming_group in user.groups.all():
                     authlogin(request, user)
-                    
-                    return HttpResponseRedirect('hradmin/', {"employee_objects": employee_objects})
+                    return HttpResponseRedirect('hradmin/')
                 else:
-                    return HttpResponse("haseeb failed 3")
+                    return HttpResponseRedirect('employee/')
             else:
                 return HttpResponse("haseeb failed 1")
         else:
