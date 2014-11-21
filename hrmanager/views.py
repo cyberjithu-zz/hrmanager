@@ -26,6 +26,7 @@ def login(request):
                     authlogin(request, user)
                     return HttpResponseRedirect('hradmin/')
                 else:
+                    authlogin(request, user)
                     return HttpResponseRedirect('employee/')
             else:
                 return HttpResponse("haseeb failed 1")
