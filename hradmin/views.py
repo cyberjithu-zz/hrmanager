@@ -11,6 +11,6 @@ def index(request):
     if request.user.groups.filter(name='admin').exists():
         employee_objects = EmployeeInfo.objects.all()
         employee_objects = [model_to_dict(obj) for obj in employee_objects]
-        return render(request, 'hradmin/hradmin.html', {'employee_objects': employee_objects})
+        return render(request, 'hradmin/index.html', {'employee_objects': employee_objects})
     else:
         return HttpResponseRedirect('../employee/')
