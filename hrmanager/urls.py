@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^employee/', include('employee.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^hradmin/', include("hradmin.urls")),
+    url(r'^chat/', include("chat.urls")),
 
 
 )

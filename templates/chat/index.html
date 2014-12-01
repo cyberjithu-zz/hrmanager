@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block main_content %}
+{% load staticfiles%}
+
+<link href="{% static "chat/css/style.css" %}" rel="stylesheet" type="text/css" media="all"/>
+
+	<div class="column_middle">
+	<form action="" method="POST" class="chatbox">
+	<textarea name="message" placeholder="type here..."></textarea>
+	<button type="submit">Send</button>
+	</form>        
+	</div> 
+
+{% endblock %}
