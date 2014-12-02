@@ -1,14 +1,33 @@
 {% extends "base.html" %}
 {% block main_content %}
 {% load staticfiles%}
-
-<link href="{% static "chat/css/style.css" %}" rel="stylesheet" type="text/css" media="all"/>
-
 	<div class="column_middle">
-	<form action="" method="POST" class="chatbox">
-	<textarea name="message" placeholder="type here..."></textarea>
-	<button type="submit">Send</button>
-	</form>        
+	   <form action="" method="POST" id="chatbox">
+         <div id="chatbody" class="chatbody">
+         </div>
+	       <textarea name="message" placeholder="type here..." id="message"></textarea>
+	   </form>        
 	</div> 
+<script type="text/javascript">
+          $(document).ready(function(){
+            ws = new WebSocket("ws://localhost:8888");
+            /*ws.onmessage = function(evt) {alert("message received: " + evt.data)};*/
+            ws.onclose = function(evt) { alert("Connection close"); };
+            ws.onopen = function(evt) { 
+              $("#message").keypress(function (evt) {
+              if(evt.which == 13) {
+                var message = $("#message").val();
+                var sender = "{{ user.get_username }}"
+                $("#message").val('');
+                evt.preventDefault();
+                $("#chatbody").append("<p>"+sender+': '+message+"</p>");
+                
+                var data = {'message':message, 'sender':sender};
+                ws.send(JSON.stringify(data));
+            };
+          });
+          };
+        });
 
+</script>
 {% endblock %}
