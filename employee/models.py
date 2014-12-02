@@ -7,10 +7,9 @@ from django.contrib.auth.models import User
 class EmployeeInfo(models.Model):
 
     def __str__(self):
-            return self.name
+        return self.user.first_name
 
     user = models.ForeignKey(User)
-    name = models.CharField(max_length=200)
     employee_id = models.IntegerField(max_length=5)
     employee_email = models.EmailField()
     date_of_join = models.DateTimeField('date joined')
@@ -21,3 +20,4 @@ class EmployeeInfo(models.Model):
     phone_home = models.CharField(max_length=14)
     department = models.CharField(max_length=200)
     working_on = models.CharField(max_length=200)
+    active_flag = models.BooleanField(default=False)
