@@ -25,10 +25,17 @@ def login(request):
             if user.is_active:
                 if adming_group in user.groups.all():
                     authlogin(request, user)
-                    
+                    current_user = HrAdminInfo.objects.filter(user=user)
+                    if current_user:
+                        current_user[0].active_flag = True
+                        current_user[0].save()
                     return HttpResponseRedirect('hradmin/')
                 else:
                     authlogin(request, user)
+                    current_user = EmployeeInfo.objects.filter(user=user)
+                    if current_user:
+                        current_user[0].active_flag = True
+                        current_user[0].save()
                     return HttpResponseRedirect('employee/')
             else:
                 return HttpResponse("haseeb failed 1")
@@ -38,5 +45,15 @@ def login(request):
 
 
 def logout(request):
+    user = request.user
+    adming_group = Group.objects.get(name="admin")
+    current_user = EmployeeInfo.objects.filter(user=user)
+    if adming_group in user.groups.all():
+        current_user = HrAdminInfo.objects.filter(user=user)
+    else:
+        current_user = EmployeeInfo.objects.filter(user=user)
+    if current_user:
+        current_user[0].active_flag = False
+        current_user[0].save()
     authlogout(request)
     return HttpResponseRedirect('/')
