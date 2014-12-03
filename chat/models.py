@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 
 class Message(models.Model):
 
-    #def __str__(self):
-    #        return self.name
+    def __str__(self):
+        return str(self.message_id)
 
-    user = models.ForeignKey(User)
+    message_id = models.IntegerField(max_length=100)
     message = models.CharField()
     date_send = models.DateTimeField('Send Datetime')
     sender_id = models.IntegerField(max_length=5)
