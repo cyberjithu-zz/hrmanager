@@ -25,20 +25,24 @@ def login(request):
             if user.is_active:
                 if adming_group in user.groups.all():
                     authlogin(request, user)
-                    current_user = HrAdminInfo.objects.filter(user=user)
-                    if current_user:
-                        current_user[0].active_flag = True
-                        current_user[0].save()
-                    return HttpResponseRedirect('hradmin/')
+                    try:
+                        current_user = HrAdminInfo.objects.filter(user=user)[0]
+                        current_user.active_flag = True
+                        current_user.save()
+                        return HttpResponseRedirect('hradmin/')
+                    except Exception as e:
+                        return HttpResponse('Something went wrong in admin login...!' + '\n' + str(e))
                 else:
                     authlogin(request, user)
-                    current_user = EmployeeInfo.objects.filter(user=user)
-                    if current_user:
-                        current_user[0].active_flag = True
-                        current_user[0].save()
-                    return HttpResponseRedirect('employee/')
+                    try:
+                        current_user = EmployeeInfo.objects.filter(user=user)[0]
+                        current_user.active_flag = True
+                        current_user.save()
+                        return HttpResponseRedirect('employee/')
+                    except Exception as e:
+                        return HttpResponse('Something went wrong in employee login...!' + '\n' + str(e))
             else:
-                return HttpResponse("haseeb failed 1")
+                return HttpResponse("User is not active")
         else:
             msg = 'Username or password incorrect'
             return render(request, "index.html", {'error': msg})
@@ -47,13 +51,15 @@ def login(request):
 def logout(request):
     user = request.user
     adming_group = Group.objects.get(name="admin")
-    current_user = EmployeeInfo.objects.filter(user=user)
-    if adming_group in user.groups.all():
-        current_user = HrAdminInfo.objects.filter(user=user)
-    else:
-        current_user = EmployeeInfo.objects.filter(user=user)
-    if current_user:
-        current_user[0].active_flag = False
-        current_user[0].save()
-    authlogout(request)
-    return HttpResponseRedirect('/')
+    try:
+        if adming_group in user.groups.all():
+            current_user = HrAdminInfo.objects.filter(user=user)[0]
+        else:
+            current_user = EmployeeInfo.objects.filter(user=user)[0]
+        if current_user:
+            current_user.active_flag = False
+            current_user.save()
+        authlogout(request)
+        return HttpResponseRedirect('/')
+    except Exception as e:
+        return HttpResponse('Something went wrong in logging out...!' + '\n' + str(e))

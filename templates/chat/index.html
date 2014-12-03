@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 {% block main_content %}
 {% load staticfiles%}
-<div class="column_left">             
+
+<div class="chat_left">             
      <div class="menu_box">
-         <h3>Menu Box</h3>
+         <h3>Direct message</h3>
            <div class="menu_box_list">
                 <ul>
-                    <li><a href="#" class="messages"><span>Messages</span><label class="digits">24</label><div class="clear"></div></a></li>
-                    <li class="active"><a href="#" class="invites"><span>Invites</span><label class="digits active">3</label><div class="clear"></div></a></li>
-                    <li><a href="#" class="events"><span>Events</span><label class="digits">5</label><div class="clear"></div></a></li>
-                    <li><a href="#" class="account_settings"><span>Account Settings</span></a></li>
-                    <li><a href="#" class="statistics"><span>Statistics</span></a></li>                         
+                    {% for admin in  admins %}
+                      {% if admin.active_flag %}
+                        <li><a href="#"><span><div id="circle-online"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                      {% else %}
+                        <li><a href="#"><span><div id="circle-idle"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% for employee in  employees %}
+                      {% if employee.active_flag %}
+                        <li><a href="#"><span><div id="circle-online"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                      {% else %}
+                        <li><a href="#"><span><div id="circle-idle"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                      {% endif %}
+                    {% endfor %}      
                 </ul>
           </div>
      </div>
@@ -20,24 +30,24 @@
 	   <form action="" method="POST" id="chatbox">
          <div id="chatbody" class="chatbody">
          </div>
-	       <textarea name="message" placeholder="type here..." id="message"></textarea>
+	       <textarea name="message_body" id="message_body" cols="70" rows="2"></textarea>
 	   </form>        
 	</div> 
 <script type="text/javascript">
           $(document).ready(function(){
             ws = new WebSocket("ws://192.168.0.18:8888");
-            /*ws.onmessage = function(evt) {alert("message received: " + evt.data)};*/
+            /*ws.onmessage_body = function(evt) {alert("message received: " + evt.data)};*/
             ws.onclose = function(evt) { alert("Connection close"); };
             ws.onopen = function(evt) { 
-              $("#message").keypress(function (evt) {
+              $("#message_body").keypress(function (evt) {
               if(evt.which == 13) {
-                var message = $("#message").val();
+                var message_body = $("#message_body").val();
                 var sender = "{{ user.get_username }}"
-                $("#message").val('');
+                $("#message_body").val('');
                 evt.preventDefault();
-                $("#chatbody").append("<p>"+sender+': '+message+"</p>");
+                $("#chatbody").append("<p>"+sender+': '+message_body+"</p>");
                 
-                var data = {'message':message, 'sender':sender};
+                var data = {'message_body':message_body, 'sender':sender};
                 ws.send(JSON.stringify(data));
             };
           });

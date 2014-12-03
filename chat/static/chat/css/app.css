@@ -1,4 +1,45 @@
 
-.chatbody{
+#chatbody {
+    position:absolute;
+    width: 61%;
+    height: 45%;
+    font-family: 'ambleregular';
+    border: solid black;
+}
+
+#message_body {
+    position:absolute;
+    float:left;
+    bottom:50px;
+    width: 60%;
     background-color: #FFFFFF;
+    padding:10px;
+    color:#FFF;
+    font-size:1em;
+    background:none;   
+    outline:none;
+    margin:0px auto;
+    -webkit-apperance:none;
+    font-family: 'ambleregular';
+}
+
+#circle-online {
+    position: absolute;
+    background-color: #00CC00;
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   border:1px solid #6666CC;
+}
+#circle-idle {
+    position: absolute;
+    background-color: #888888 ;
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   border:1px solid #6666CC;
+}
+.chat_left {
+    float:left;
+    width:20%;
 }
