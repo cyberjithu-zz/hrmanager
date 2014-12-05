@@ -32,13 +32,13 @@
 				      			</tr>
 					      	</thead>
 					      	<tbody class="table-hover">
-					      		{% for data in employee_objects %}
+					      		{% for data in employees %}
 					      			<tr>
 					      				<td class="text-left">
 						      				{{data.id }}
 						      			</td> 
 						      			<td class="text-left">
-						      				{{data.name }}
+						      				{{data.user.username }}
 						      			</td>
 					      				
 					      			</tr>

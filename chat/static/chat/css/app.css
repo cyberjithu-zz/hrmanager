@@ -4,7 +4,8 @@
     width: 61%;
     height: 45%;
     font-family: 'ambleregular';
-    border: solid black;
+    border: none;
+    overflow: auto;
 }
 
 #message_body {
@@ -42,4 +43,11 @@
 .chat_left {
     float:left;
     width:20%;
+}
+.sender {
+  color: #33CCCC;
+  padding-right: 4px;
+}
+a {
+  cursor: pointer;
 }

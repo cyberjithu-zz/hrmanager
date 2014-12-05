@@ -14,6 +14,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <link href="{% static "employee/css/nav.css" %}" rel="stylesheet" type="text/css" media="all"/>
 <link href="{% static "chat/css/app.css" %}" rel='stylesheet' type='text/css' media="all"/>
 <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic+SC' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static "chat/js/angular.min.js" %}"></script>
 <script type="text/javascript" src="{% static "employee/js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "employee/js/login.js" %}"></script>
 <script type="text/javascript" src="{% static "employee/js/Chart.js" %}"></script>
@@ -27,7 +28,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <script src="{% static "employee/js/site.js" %}"></script>
   <!----End Calender -------->
 </head>
-<body>			       
+<body ng-app="hrApp">			       
 	    <div class="wrap">	 
 	      <div class="header">
 	      	  <div class="header_top">
@@ -78,9 +79,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     	<div class="clear"></div>
  	 </div>
    </div>
-  		 <div class="copy-right">
-				<p>HR Manager © 2014 </p>
-	 	 </div>   
+ <div class="copy-right">
+	<p>HR Manager © 2014 </p>
+ </div>
 </body>
 </html>
 

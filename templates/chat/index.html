@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 {% block main_content %}
-{% load staticfiles%}
+{% load staticfiles %}
 
 <div class="chat_left">             
      <div class="menu_box">
          <h3>Direct message</h3>
-           <div class="menu_box_list">
+           <div class="menu_box_list" ng-controller="onlineUserCtrl" ng-init="sender='{{user.id}}';csrf_token='{{ csrf_token }}'">
                 <ul>
                     {% for admin in  admins %}
                       {% if admin.active_flag %}
-                        <li><a href="#"><span><div id="circle-online"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                        <li><a ng-click="loadMessages({{ admin.user.id }})" ><span><div id="circle-online"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
                       {% else %}
-                        <li><a href="#"><span><div id="circle-idle"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                        <li><a ng-click="loadMessages({{ admin.user.id }});" ><span><div id="circle-idle"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
                       {% endif %}
                     {% endfor %}
                     {% for employee in  employees %}
                       {% if employee.active_flag %}
-                        <li><a href="#"><span><div id="circle-online"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                        <li><a ng-click="loadMessages({{ employee.user.id }})" ><span><div id="circle-online"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
                       {% else %}
-                        <li><a href="#"><span><div id="circle-idle"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                        <li><a ng-click="loadMessages({{ employee.user.id }})" ><span><div id="circle-idle"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
                       {% endif %}
                     {% endfor %}      
                 </ul>
@@ -26,33 +26,36 @@
      </div>
                 
 </div> 
-	<div class="column_middle">
+	<div class="column_middle" ng-controller="messageCtrl" ng-init="sender='{{user}}'; ">
 	   <form action="" method="POST" id="chatbox">
-         <div id="chatbody" class="chatbody">
-         </div>
-	       <textarea name="message_body" id="message_body" cols="70" rows="2"></textarea>
+        <div id="chatbody" class="chatbody">
+        </div>
+	       <textarea ng-model="message_body" id="message_body" ng-keypress="sendMessage($event)"></textarea>
 	   </form>        
-	</div> 
+	</div>
+<script type="text/javascript" src="{% static "chat/js/hrapp.js" %}"></script>
+<script type="text/javascript" src="{% static "chat/js/messagectrl.js" %}"></script>
 <script type="text/javascript">
-          $(document).ready(function(){
-            ws = new WebSocket("ws://192.168.0.18:8888");
-            /*ws.onmessage_body = function(evt) {alert("message received: " + evt.data)};*/
-            ws.onclose = function(evt) { alert("Connection close"); };
-            ws.onopen = function(evt) { 
-              $("#message_body").keypress(function (evt) {
-              if(evt.which == 13) {
-                var message_body = $("#message_body").val();
-                var sender = "{{ user.get_username }}"
-                $("#message_body").val('');
-                evt.preventDefault();
-                $("#chatbody").append("<p>"+sender+': '+message_body+"</p>");
-                
-                var data = {'message_body':message_body, 'sender':sender};
-                ws.send(JSON.stringify(data));
-            };
-          });
-          };
-        });
+    hrapp.controller("onlineUserCtrl", function($scope, $http) {
+        $scope.loadMessages = function(user_id){
+            alert(user_id);
+            var request = $http({
+                method: "post",
+                url: "ajaxmessage",
+                data: {
+                    'csrfmiddlewaretoken' : $scope.csrf_token,
+                    'sender': $scope.sender,
+                    'receiver': user_id,
+                }
+                });
+            request.success(
+                function( data ) {
+                    var localData = data;
+                    alert(localData);
+                }
+            );
 
+        }
+    });
 </script>
 {% endblock %}
