@@ -3,5 +3,6 @@ from chat import views
 
 urlpatterns = patterns('/',
                        url(r'^$', views.index, name='index'),
-                       url(r'^ajaxmessage$', views.getmessages, name='getmessages')
+                       url(r'^user-(?P<username>\w+)$', views.chatselect, name='chatselect'),
+                       url(r'^ajaxmessage/$', views.loadmessages, name='loadmessages')
                        )

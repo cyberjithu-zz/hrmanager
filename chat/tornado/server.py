@@ -15,7 +15,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         # self.write_message("Message from server")
 
     def on_message(self, message):
-        print 'message received %s' % json.loads(message)['sender']
+        print 'message received %s' % json.loads(message)
+        self.write_message("Message from server")
 
     def on_close(self):
         self.CONNECTIONS.remove(self)
@@ -29,5 +30,5 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888, address='192.168.1.4')
+    http_server.listen(8888, address='192.168.1.16')
     tornado.ioloop.IOLoop.instance().start()
