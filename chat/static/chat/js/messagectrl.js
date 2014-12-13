@@ -1,26 +1,32 @@
-  hrapp.controller("chatController", function($scope, $http, $rootScope, $window) {
-      ws = new WebSocket("ws://192.168.1.16:8888");
-      ws.onmessage = function(event) {
-          alert('aaaaaaaaa')
-          $("#chatbody").append("<p>"+event.data+"</p>");
-      };
-      ws.onclose = function(event) { alert("Connection close"); };
-      ws.onopen = function(event) { 
-            $scope.sendMessage = function(event){
-                if(event.which == 13) {
-                    event.preventDefault();
-                    var message_body = $scope.message_body;
-                    $scope.message_body = '';
-                    $("#chatbody").append("<p><span class=sender>" +$scope.sender+'</span>: '+message_body+"</p>");
-                    var data = {'message_body':message_body, 'sender':$scope.sender, 'receiver':$scope.receiver};
-                    ws.send(JSON.stringify(data));
-               }; 
-            };
+  hrapp.controller("chatController", function($scope, $window) {
+      //ws_data = {'sender': $scope.sender, 'receiver': $scope.receiver}
+      //JSON.stringify(ws_data)
+      $scope.init = function(sender, receiver){
+          $scope.sender = sender;
+          $scope.receiver = receiver;
+          ws_data = {'sender':$scope.sender, 'receiver': $scope.receiver};
+          ws = new WebSocket("ws://192.168.1.3:8888/data="+JSON.stringify(ws_data));
+          ws.onmessage = function(event) {
+              var message = JSON.parse(event.data);
+              $("#chatbody").append("<p><span class=sender>" +message['sender']+'</span>: '+message['message_body']+"</p>");
           };
-      $scope.loadMessages = function(user2){
-          $window.location.href = 'user-'+user2
+          ws.onclose = function(event) { alert("Connection close"); };
+          ws.onopen = function(event) { 
+                $scope.sendMessage = function(event){
+                    if(event.which == 13) {
+                        event.preventDefault();
+                        var message_body = $scope.message_body;
+                        $scope.message_body = '';
+                        $("#chatbody").append("<p><span class=sender>" +$scope.sender+'</span>: '+message_body+"</p>");
+                        var data = {'message_body':message_body, 'sender':$scope.sender, 'receiver':$scope.receiver, 'datetime':new Date().toLocaleString()};
+                        ws.send(JSON.stringify(data));
+                   }; 
+                };
+              };
+          $scope.loadMessages = function(user2){
+              $window.location.href = 'user-'+user2
       };
-
+    }
   });
 /*
           alert(user2);

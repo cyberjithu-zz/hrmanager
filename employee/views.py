@@ -10,5 +10,5 @@ def index(request):
     if request.user.groups.filter(name='admin').exists():
         return HttpResponseRedirect('../hradmin/')
     else:
-        context['user_data'] = EmployeeInfo.objects.filter(user=request.user)[0]
+        context['user_data'] = EmployeeInfo.objects.get(user=request.user)
         return render(request, 'employee/index.html', context)

@@ -2,43 +2,47 @@
 {% block main_content %}
 {% load staticfiles %}
 {% csrf_token %}
-<div class="chat_left">             
-     <div class="menu_box">
-         <h3>Direct message</h3>
-           <div class="menu_box_list" ng-controller="chatController" ng-init="user1='{{user}}';">
-           {% csrf_token %}
-                <ul id="users">
-                    {% for admin in  admins %}
-                      {% if admin.active_flag %}
-                        <li><a ng-click="loadMessages('{{ admin.user }}')" ><span><div id="circle-online"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
-                      {% else %}
-                        <li><a ng-click="loadMessages('{{ admin.user }}')" ><span><div id="circle-idle"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
-                      {% endif %}
-                    {% endfor %}
-                    {% for employee in  employees %}
-                      {% if employee.active_flag %}
-                        <li><a ng-click="loadMessages('{{ employee.user }}')" ><span><div id="circle-online"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
-                      {% else %}
-                        <li><a ng-click="loadMessages('{{ employee.user }}')" ><span><div id="circle-idle"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
-                      {% endif %}
-                    {% endfor %}      
-                </ul>
+<div class="main" ng-app="hrApp" ng-controller="chatController" ng-init="init('{{user}}','{{selected_user}}');">  
+  <div class="wrap">       
+    <div class="chat_left">             
+         <div class="menu_box">
+             <h3>Direct message</h3>
+               <div class="menu_box_list">
+                    <ul id="users">
+                        {% for admin in  admins %}
+                          {% if admin.active_flag %}
+                            <li><a ng-click="loadMessages('{{ admin.user }}')" ><span><div id="circle-online"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                          {% else %}
+                            <li><a ng-click="loadMessages('{{ admin.user }}')" ><span><div id="circle-idle"></div>{{ admin.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% for employee in  employees %}
+                          {% if employee.active_flag %}
+                            <li><a ng-click="loadMessages('{{ employee.user }}')" ><span><div id="circle-online"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                          {% else %}
+                            <li><a ng-click="loadMessages('{{ employee.user }}')" ><span><div id="circle-idle"></div>{{ employee.user }}</span><label class="digits">0</label><div class="clear"></div></a></li>
+                          {% endif %}
+                        {% endfor %}      
+                    </ul>
+              </div>
+         </div>
+                    
+    </div> 
+  	<div class="column_middle">
+  	   <form action="" method="POST" id="chatbox">
+          <div id="chatbody" class="chatbody">
+            {% for message in messages %}
+              <p>
+                  <span class=sender>{{ message.sender }}</span>:{{ message.message_body }}
+              </p>
+            {% endfor %}
           </div>
-     </div>
-                
-</div> 
-	<div class="column_middle" ng-controller="chatController" ng-init="sender='{{user}}'; receiver='{{selected_user}}';">
-	   <form action="" method="POST" id="chatbox">
-        <div id="chatbody" class="chatbody">
-          {% for message in messages %}
-            <p>
-                <span class=sender>{{ message.sender }}</span>:{{ message.message_body }}
-            </p>
-          {% endfor %}
-        </div>
-	       <textarea ng-model="message_body" id="message_body" ng-keypress="sendMessage($event)"></textarea>
-	   </form>        
-	</div>
+  	       <textarea ng-model="message_body" id="message_body" ng-keypress="sendMessage($event)"></textarea>
+  	   </form>        
+  	</div>
+  <div class="clear"></div>
+  </div>
+</div>
 <script type="text/javascript" src="{% static "chat/js/hrapp.js" %}"></script>
 <script type="text/javascript" src="{% static "chat/js/messagectrl.js" %}"></script>
 

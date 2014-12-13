@@ -28,7 +28,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <script src="{% static "employee/js/site.js" %}"></script>
   <!----End Calender -------->
 </head>
-<body ng-app="hrApp">			       
+<body>			       
 	    <div class="wrap">	 
 	      <div class="header">
 	      	  <div class="header_top">
@@ -70,15 +70,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				   </div>
 			</div>	  					     
 	</div>
-	  <div class="main">  
-	    <div class="wrap">  		 
-	    
-	  		{% block main_content %}
-	  		{% endblock %}
+	{% block main_content %}
 
-    	<div class="clear"></div>
- 	 </div>
-   </div>
+	{% endblock %}
  <div class="copy-right">
 	<p>HR Manager © 2014 </p>
  </div>

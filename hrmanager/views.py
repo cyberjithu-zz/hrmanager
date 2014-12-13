@@ -26,7 +26,7 @@ def login(request):
                 if adming_group in user.groups.all():
                     authlogin(request, user)
                     try:
-                        current_user = HrAdminInfo.objects.filter(user=user)[0]
+                        current_user = HrAdminInfo.objects.get(user=user)
                         current_user.active_flag = True
                         current_user.save()
                         return HttpResponseRedirect('hradmin/')
@@ -35,7 +35,7 @@ def login(request):
                 else:
                     authlogin(request, user)
                     try:
-                        current_user = EmployeeInfo.objects.filter(user=user)[0]
+                        current_user = EmployeeInfo.objects.get(user=user)
                         current_user.active_flag = True
                         current_user.save()
                         return HttpResponseRedirect('employee/')
@@ -53,9 +53,9 @@ def logout(request):
     adming_group = Group.objects.get(name="admin")
     try:
         if adming_group in user.groups.all():
-            current_user = HrAdminInfo.objects.filter(user=user)[0]
+            current_user = HrAdminInfo.objects.get(user=user)
         else:
-            current_user = EmployeeInfo.objects.filter(user=user)[0]
+            current_user = EmployeeInfo.objects.get(user=user)
         if current_user:
             current_user.active_flag = False
             current_user.save()
