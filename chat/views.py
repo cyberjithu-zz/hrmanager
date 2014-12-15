@@ -11,16 +11,12 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-# from django.contrib.auth.models import User
-
-
 @login_required(login_url='/')
 def index(request):
     return HttpResponseRedirect('user-hradmin')
 
 
 def chatselect(request, username):
-    print '>>>>>>>', username, request.user
     context = {}
     context['employees'] = EmployeeInfo.objects.exclude(user=request.user)
     context['admins'] = HrAdminInfo.objects.exclude(user=request.user)
@@ -31,4 +27,5 @@ def chatselect(request, username):
     user1 = User.objects.get(username=username)
     context['messages'] = Message.objects.filter(Q(sender=user1, receiver=request.user) | Q(sender=request.user, receiver=user1)).order_by('datetime')
     context['selected_user'] = username
+    print '>>>>>>>>', context['messages']
     return render(request, 'chat/index.html', context)

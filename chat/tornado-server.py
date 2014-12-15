@@ -23,57 +23,25 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         data = json.loads(data)
         connection = {self: {'sender': data['sender'], 'receiver': data['receiver']}}
         self.CONNECTIONS.update(connection)
-        self.MESSAGES.update({self: {'receiver_socket': '', 'messages': []}})
 
     def on_message(self, message):
-        receiver_active = False
         print 'message received %s' % json.loads(message)
         message = json.loads(message)
         for con, data in self.CONNECTIONS.iteritems():
             if data['sender'] == message['receiver'] and data['receiver'] == message['sender']:
-                receiver_active = True
                 con.write_message(message)
-                self.MESSAGES[self]['receiver_socket'] = con
-                self.MESSAGES[self]['messages'].append(message)
-        if receiver_active is False:
-            users = User.objects.all()
-            sender = User.objects.get(username=message['sender'])
-            receiver = User.objects.get(username=message['receiver'])
-            new_message = Message(
-                sender=sender,
-                receiver=receiver,
-                message_body=message['message_body'],
-                datetime=parser.parse(message['datetime'])
-            )
-            new_message.save()
+        users = User.objects.all()
+        sender = User.objects.get(username=message['sender'])
+        receiver = User.objects.get(username=message['receiver'])
+        new_message = Message(
+            sender=sender,
+            receiver=receiver,
+            message_body=message['message_body'],
+            datetime=parser.parse(message['datetime'])
+        )
+        new_message.save()
 
     def on_close(self):
-        if self.MESSAGES[self]['messages']:
-            for message in self.MESSAGES[self]['messages']:
-                receiver_flag = 1
-                sender = User.objects.get(username=message['sender'])
-                receiver = User.objects.get(username=message['receiver'])
-                new_message = Message(
-                    sender=sender,
-                    receiver=receiver,
-                    message_body=message['message_body'],
-                    datetime=parser.parse(message['datetime'])
-                )
-                new_message.save()
-        if self.MESSAGES[self]['receiver_socket']:
-            receiver_socket = self.MESSAGES[self]['receiver_socket']
-            if self.MESSAGES[receiver_socket]['messages']:
-                for message in self.MESSAGES[receiver_socket]['messages']:
-                    receiver_flag = 1
-                    sender = User.objects.get(username=message['sender'])
-                    receiver = User.objects.get(username=message['receiver'])
-                    new_message = Message(
-                        sender=sender,
-                        receiver=receiver,
-                        message_body=message['message_body'],
-                        datetime=parser.parse(message['datetime'])
-                    )
-                    new_message.save()
         self.CONNECTIONS.pop(self)
         print 'connection closed'
 
