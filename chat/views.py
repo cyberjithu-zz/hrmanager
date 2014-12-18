@@ -16,6 +16,7 @@ def index(request):
     return HttpResponseRedirect('user-hradmin')
 
 
+@login_required(login_url='/')
 def chatselect(request, username):
     context = {}
     context['employees'] = EmployeeInfo.objects.exclude(user=request.user)

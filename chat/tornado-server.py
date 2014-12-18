@@ -27,19 +27,24 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         print 'message received %s' % json.loads(message)
         message = json.loads(message)
-        for con, data in self.CONNECTIONS.iteritems():
-            if data['sender'] == message['receiver'] and data['receiver'] == message['sender']:
-                con.write_message(message)
-        users = User.objects.all()
-        sender = User.objects.get(username=message['sender'])
-        receiver = User.objects.get(username=message['receiver'])
-        new_message = Message(
-            sender=sender,
-            receiver=receiver,
-            message_body=message['message_body'],
-            datetime=parser.parse(message['datetime'])
-        )
-        new_message.save()
+        if message['typing'] is 'true':
+            for con, data in self.CONNECTIONS.iteritems():
+                if data['sender'] == message['receiver'] and data['receiver'] == message['sender']:
+                    con.write_message(message)
+        else:
+            for con, data in self.CONNECTIONS.iteritems():
+                if data['sender'] == message['receiver'] and data['receiver'] == message['sender']:
+                    con.write_message(message)
+            users = User.objects.all()
+            sender = User.objects.get(username=message['sender'])
+            receiver = User.objects.get(username=message['receiver'])
+            new_message = Message(
+                sender=sender,
+                receiver=receiver,
+                message_body=message['message_body'],
+                datetime=parser.parse(message['datetime'])
+            )
+            new_message.save()
 
     def on_close(self):
         self.CONNECTIONS.pop(self)
@@ -53,5 +58,5 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888, address='192.168.1.3')
+    http_server.listen(8888, address='192.168.0.20')
     tornado.ioloop.IOLoop.instance().start()
